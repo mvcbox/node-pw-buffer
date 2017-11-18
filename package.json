@@ -1,0 +1,22 @@
+{
+  "name": "pw-buffer",
+  "version": "0.1.0",
+  "description": "PW Buffer",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mvcbox/node-pw-buffer.git"
+  },
+  "author": "mvcbox.org@gmail.com",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/mvcbox/node-pw-buffer/issues"
+  },
+  "homepage": "https://github.com/mvcbox/node-pw-buffer#readme",
+  "dependencies": {
+    "extended-buffer": "^4.0.1"
+  }
+}
