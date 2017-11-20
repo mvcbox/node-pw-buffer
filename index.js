@@ -55,6 +55,8 @@ class PwBuffer extends ExtendedBuffer
      * @return {PwBuffer}
      */
     writeCUInt(value, unshift, noAssert) {
+        let tmp;
+
         if (unshift) {
             let buffer = new this.constructor({
                 maxBufferLength: 10
@@ -63,9 +65,21 @@ class PwBuffer extends ExtendedBuffer
             if (value <= 0x7F) {
                 buffer.writeUInt8(value, false, noAssert);
             } else if (value <= 0x3FFF) {
-                buffer.writeUInt16BE(value | 0x8000, false, noAssert);
+                tmp = value | 0x8000;
+
+                if (tmp < 0) {
+                    buffer.writeInt16BE(tmp, false, noAssert);
+                } else {
+                    buffer.writeUInt16BE(tmp, false, noAssert);
+                }
             } else if (value <= 0x1FFFFFFF) {
-                buffer.writeUInt32BE(value | 0xC0000000, false, noAssert);
+                tmp = value | 0xC0000000;
+
+                if (tmp < 0) {
+                    buffer.writeInt32BE(tmp, false, noAssert);
+                } else {
+                    buffer.writeUInt32BE(tmp, false, noAssert);
+                }
             } else {
                 buffer.writeUInt8(0xE0, false, noAssert).writeUInt32BE(value, false, noAssert);
             }
@@ -76,9 +90,21 @@ class PwBuffer extends ExtendedBuffer
         if (value <= 0x7F) {
             this.writeUInt8(value, false, noAssert);
         } else if (value <= 0x3FFF) {
-            this.writeUInt16BE(value | 0x8000, false, noAssert);
+            tmp = value | 0x8000;
+
+            if (tmp < 0) {
+                this.writeInt16BE(tmp, false, noAssert);
+            } else {
+                this.writeUInt16BE(tmp, false, noAssert);
+            }
         } else if (value <= 0x1FFFFFFF) {
-            this.writeUInt32BE(value | 0xC0000000, false, noAssert);
+            tmp = value | 0xC0000000;
+
+            if (tmp < 0) {
+                this.writeInt32BE(tmp, false, noAssert);
+            } else {
+                this.writeUInt32BE(tmp, false, noAssert);
+            }
         } else {
             this.writeUInt8(0xE0, false, noAssert).writeUInt32BE(value, false, noAssert);
         }
