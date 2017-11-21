@@ -62,9 +62,9 @@ class PwBuffer extends ExtendedBuffer
                 maxBufferLength: 10
             });
 
-            if (value <= 0x7F) {
+            if (value < 0x80) {
                 buffer.writeUInt8(value, false, noAssert);
-            } else if (value <= 0x3FFF) {
+            } else if (value < 0x4000) {
                 tmp = value | 0x8000;
 
                 if (tmp < 0) {
@@ -72,7 +72,7 @@ class PwBuffer extends ExtendedBuffer
                 } else {
                     buffer.writeUInt16BE(tmp, false, noAssert);
                 }
-            } else if (value <= 0x1FFFFFFF) {
+            } else if (value < 0x20000000) {
                 tmp = value | 0xC0000000;
 
                 if (tmp < 0) {
@@ -87,9 +87,9 @@ class PwBuffer extends ExtendedBuffer
             return this._writeNativeBuffer(buffer.buffer, true);
         }
 
-        if (value <= 0x7F) {
+        if (value < 0x80) {
             this.writeUInt8(value, false, noAssert);
-        } else if (value <= 0x3FFF) {
+        } else if (value < 0x4000) {
             tmp = value | 0x8000;
 
             if (tmp < 0) {
@@ -97,7 +97,7 @@ class PwBuffer extends ExtendedBuffer
             } else {
                 this.writeUInt16BE(tmp, false, noAssert);
             }
-        } else if (value <= 0x1FFFFFFF) {
+        } else if (value < 0x20000000) {
             tmp = value | 0xC0000000;
 
             if (tmp < 0) {
