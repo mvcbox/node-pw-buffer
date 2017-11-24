@@ -111,6 +111,53 @@ class PwBuffer extends ExtendedBuffer
 
         return this;
     }
+
+    /**
+     * @param {boolean} noAssert
+     * @return {string}
+     */
+    readPwString(noAssert) {
+        return this.readString(this.readCUInt(noAssert), 'utf16le');
+    }
+
+    /**
+     * @param {string} string
+     * @param {boolean} unshift
+     * @param {boolean} noAssert
+     * @return {PwBuffer}
+     */
+    writePwString(string, unshift, noAssert) {
+        if (unshift) {
+            return this.writeString(string, 'utf16le', true).writeCUInt(Buffer.byteLength(string, 'utf16le'), true, noAssert);
+        }
+
+        return this.writeCUInt(Buffer.byteLength(string, 'utf16le'), false, noAssert).writeString(string, 'utf16le', false);
+    }
+
+    /**
+     * @param {boolean} noAssert
+     * @return {PwBuffer}
+     */
+    readPwOctets(noAssert) {
+        let byteLength = this.readCUInt(noAssert);
+        return this.readBuffer(byteLength, false, {
+            maxBufferLength: byteLength
+        });
+    }
+
+    /**
+     * @param {PwBuffer|ExtendedBuffer|Buffer} octets
+     * @param {boolean} unshift
+     * @param {boolean} noAssert
+     * @return {PwBuffer}
+     */
+    writePwOctets(octets, unshift, noAssert) {
+        if (unshift) {
+            return this.writeBuffer(octets, true).writeCUInt(octets.length, true, noAssert);
+        }
+
+        return this.writeCUInt(octets.length, false, noAssert).writeBuffer(octets, false);
+    }
 }
 
 module.exports = PwBuffer;
