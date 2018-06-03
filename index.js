@@ -5,7 +5,7 @@ const ExtendedBuffer = require('extended-buffer');
 class PwBuffer extends ExtendedBuffer
 {
     /**
-     * @return {boolean}
+     * @returns {boolean}
      */
     isReadableCUInt() {
         if (!this.isReadable(1)) {
@@ -30,7 +30,7 @@ class PwBuffer extends ExtendedBuffer
 
     /**
      * @param {boolean} noAssert
-     * @return {number}
+     * @returns {number}
      */
     readCUInt(noAssert) {
         let value = this.readUInt8(noAssert);
@@ -49,72 +49,61 @@ class PwBuffer extends ExtendedBuffer
     }
 
     /**
+     * @param {PwBuffer} buffer
      * @param {number} value
-     * @param {boolean} unshift
      * @param {boolean} noAssert
-     * @return {PwBuffer}
+     * @returns {PwBuffer}
+     * @private
      */
-    writeCUInt(value, unshift, noAssert) {
+    _writeCUIntToBuffer(buffer, value, noAssert) {
         let tmp;
 
-        if (unshift) {
-            let buffer = new this.constructor({
-                maxBufferLength: 10
-            });
-
-            if (value < 0x80) {
-                buffer.writeUInt8(value, false, noAssert);
-            } else if (value < 0x4000) {
-                tmp = value | 0x8000;
-
-                if (tmp < 0) {
-                    buffer.writeInt16BE(tmp, false, noAssert);
-                } else {
-                    buffer.writeUInt16BE(tmp, false, noAssert);
-                }
-            } else if (value < 0x20000000) {
-                tmp = value | 0xC0000000;
-
-                if (tmp < 0) {
-                    buffer.writeInt32BE(tmp, false, noAssert);
-                } else {
-                    buffer.writeUInt32BE(tmp, false, noAssert);
-                }
-            } else {
-                buffer.writeUInt8(0xE0, false, noAssert).writeUInt32BE(value, false, noAssert);
-            }
-
-            return this._writeNativeBuffer(buffer.buffer, true);
-        }
-
         if (value < 0x80) {
-            this.writeUInt8(value, false, noAssert);
+            buffer.writeUInt8(value, false, noAssert);
         } else if (value < 0x4000) {
             tmp = value | 0x8000;
 
             if (tmp < 0) {
-                this.writeInt16BE(tmp, false, noAssert);
+                buffer.writeInt16BE(tmp, false, noAssert);
             } else {
-                this.writeUInt16BE(tmp, false, noAssert);
+                buffer.writeUInt16BE(tmp, false, noAssert);
             }
         } else if (value < 0x20000000) {
             tmp = value | 0xC0000000;
 
             if (tmp < 0) {
-                this.writeInt32BE(tmp, false, noAssert);
+                buffer.writeInt32BE(tmp, false, noAssert);
             } else {
-                this.writeUInt32BE(tmp, false, noAssert);
+                buffer.writeUInt32BE(tmp, false, noAssert);
             }
         } else {
-            this.writeUInt8(0xE0, false, noAssert).writeUInt32BE(value, false, noAssert);
+            buffer.writeUInt8(0xE0, false, noAssert).writeUInt32BE(value, false, noAssert);
         }
 
         return this;
     }
 
     /**
+     * @param {number} value
+     * @param {boolean} unshift
      * @param {boolean} noAssert
-     * @return {string}
+     * @returns {PwBuffer}
+     */
+    writeCUInt(value, unshift, noAssert) {
+        if (unshift) {
+            let buffer = new this.constructor({
+                maxBufferLength: 10
+            });
+
+            return this._writeCUIntToBuffer(buffer, value, noAssert)._writeNativeBuffer(buffer.buffer, true);
+        }
+
+        return this._writeCUIntToBuffer(this, value, noAssert);
+    }
+
+    /**
+     * @param {boolean} noAssert
+     * @returns {string}
      */
     readPwString(noAssert) {
         return this.readString(this.readCUInt(noAssert), 'utf16le');
@@ -124,7 +113,7 @@ class PwBuffer extends ExtendedBuffer
      * @param {string} string
      * @param {boolean} unshift
      * @param {boolean} noAssert
-     * @return {PwBuffer}
+     * @returns {PwBuffer}
      */
     writePwString(string, unshift, noAssert) {
         if (unshift) {
@@ -136,7 +125,7 @@ class PwBuffer extends ExtendedBuffer
 
     /**
      * @param {boolean} noAssert
-     * @return {PwBuffer}
+     * @returns {PwBuffer}
      */
     readPwOctets(noAssert) {
         let byteLength = this.readCUInt(noAssert);
@@ -149,7 +138,7 @@ class PwBuffer extends ExtendedBuffer
      * @param {PwBuffer|ExtendedBuffer|Buffer} octets
      * @param {boolean} unshift
      * @param {boolean} noAssert
-     * @return {PwBuffer}
+     * @returns {PwBuffer}
      */
     writePwOctets(octets, unshift, noAssert) {
         if (unshift) {
