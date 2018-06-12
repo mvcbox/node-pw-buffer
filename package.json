@@ -1,6 +1,6 @@
 {
   "name": "pw-buffer",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "description": "PW Buffer, Perfect World",
   "main": "index.js",
   "scripts": {
@@ -17,6 +17,6 @@
   },
   "homepage": "https://github.com/mvcbox/node-pw-buffer#readme",
   "dependencies": {
-    "extended-buffer": "^4.0.1"
+    "extended-buffer": "^4.0.3"
   }
 }
