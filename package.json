@@ -1,6 +1,6 @@
 {
   "name": "pw-buffer",
-  "version": "0.2.3",
+  "version": "0.2.4",
   "description": "PW Buffer, Perfect World",
   "main": "index.js",
   "scripts": {
