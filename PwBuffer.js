@@ -13,7 +13,7 @@ class PwBuffer extends ExtendedBuffer
         }
 
         let value = this.readUInt8();
-        this.offset(-1);
+        --this._pointer;
 
         switch (value & 0xE0) {
             case 0xE0:
@@ -39,10 +39,12 @@ class PwBuffer extends ExtendedBuffer
             case 0xE0:
                 return this.readUInt32BE(noAssert);
             case 0xC0:
-                return this.offset(-1).readUInt32BE(noAssert) & 0x1FFFFFFF;
+                --this._pointer;
+                return this.readUInt32BE(noAssert) & 0x1FFFFFFF;
             case 0x80:
             case 0xA0:
-                return this.offset(-1).readUInt16BE(noAssert) & 0x3FFF;
+                --this._pointer;
+                return this.readUInt16BE(noAssert) & 0x3FFF;
         }
 
         return value;
