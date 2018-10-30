@@ -33,18 +33,18 @@ class PwBuffer extends ExtendedBuffer
      * @returns {number}
      */
     readCUInt(noAssert) {
-        let value = this.readUInt8(noAssert);
+        let value = this.readUIntBE(1, noAssert);
 
         switch (value & 0xE0) {
             case 0xE0:
-                return this.readUInt32BE(noAssert);
+                return this.readUIntBE(4, noAssert);
             case 0xC0:
                 --this._pointer;
-                return this.readUInt32BE(noAssert) & 0x1FFFFFFF;
+                return this.readUIntBE(4, noAssert) & 0x1FFFFFFF;
             case 0x80:
             case 0xA0:
                 --this._pointer;
-                return this.readUInt16BE(noAssert) & 0x3FFF;
+                return this.readUIntBE(2, noAssert) & 0x3FFF;
         }
 
         return value;
@@ -61,25 +61,25 @@ class PwBuffer extends ExtendedBuffer
         let tmp;
 
         if (value < 0x80) {
-            buffer.writeUInt8(value, false, noAssert);
+            buffer.writeUIntBE(value, 1, false, noAssert);
         } else if (value < 0x4000) {
             tmp = value | 0x8000;
 
             if (tmp < 0) {
-                buffer.writeInt16BE(tmp, false, noAssert);
+                buffer.writeIntBE(tmp, 2, false, noAssert);
             } else {
-                buffer.writeUInt16BE(tmp, false, noAssert);
+                buffer.writeUIntBE(tmp, 2, false, noAssert);
             }
         } else if (value < 0x20000000) {
             tmp = value | 0xC0000000;
 
             if (tmp < 0) {
-                buffer.writeInt32BE(tmp, false, noAssert);
+                buffer.writeIntBE(tmp, 4, false, noAssert);
             } else {
-                buffer.writeUInt32BE(tmp, false, noAssert);
+                buffer.writeUIntBE(tmp, 4, false, noAssert);
             }
         } else {
-            buffer.writeUInt8(0xE0, false, noAssert).writeUInt32BE(value, false, noAssert);
+            buffer.writeUIntBE(0xE0, 1, false, noAssert).writeUIntBE(value, 4, false, noAssert);
         }
 
         return this;
