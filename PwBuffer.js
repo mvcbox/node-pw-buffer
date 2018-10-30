@@ -12,7 +12,7 @@ class PwBuffer extends ExtendedBuffer
             return false;
         }
 
-        let value = this.readUInt8();
+        let value = this.readUIntBE(1);
         --this._pointer;
 
         switch (value & 0xE0) {
