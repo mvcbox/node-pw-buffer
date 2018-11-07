@@ -94,7 +94,7 @@ class PwBuffer extends ExtendedBuffer
     writeCUInt(value, unshift, noAssert) {
         if (unshift) {
             let buffer = new this.constructor({
-                maxBufferLength: 10
+                maxBufferLength: 5
             });
 
             return this._writeCUIntToBuffer(buffer, value, noAssert)._writeNativeBuffer(buffer.buffer, true);
