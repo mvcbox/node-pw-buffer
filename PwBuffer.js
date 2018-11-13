@@ -63,17 +63,13 @@ class PwBuffer extends ExtendedBuffer
         if (value < 0x80) {
             buffer.writeUIntBE(value, 1, false, noAssert);
         } else if (value < 0x4000) {
-            tmp = value | 0x8000;
-
-            if (tmp < 0) {
+            if ((tmp = value | 0x8000) < 0) {
                 buffer.writeIntBE(tmp, 2, false, noAssert);
             } else {
                 buffer.writeUIntBE(tmp, 2, false, noAssert);
             }
         } else if (value < 0x20000000) {
-            tmp = value | 0xC0000000;
-
-            if (tmp < 0) {
+            if ((tmp = value | 0xC0000000) < 0) {
                 buffer.writeIntBE(tmp, 4, false, noAssert);
             } else {
                 buffer.writeUIntBE(tmp, 4, false, noAssert);
