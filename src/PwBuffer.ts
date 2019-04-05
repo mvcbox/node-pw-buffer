@@ -1,13 +1,10 @@
-'use strict';
+import { ExtendedBuffer, ExtendedBufferOptions } from 'extended-buffer';
+import { Buffer } from 'buffer';
 
-const ExtendedBuffer = require('extended-buffer');
+export interface PwBufferOptions extends ExtendedBufferOptions {}
 
-class PwBuffer extends ExtendedBuffer
-{
-    /**
-     * @returns {boolean}
-     */
-    isReadableCUInt() {
+export class PwBuffer extends ExtendedBuffer {
+    public isReadableCUInt(): boolean {
         if (!this.isReadable(1)) {
             return false;
         }
@@ -28,11 +25,7 @@ class PwBuffer extends ExtendedBuffer
         return true;
     }
 
-    /**
-     * @param {boolean} noAssert
-     * @returns {number}
-     */
-    readCUInt(noAssert) {
+    public readCUInt(noAssert: boolean = false): number {
         let value = this.readUIntBE(1, noAssert);
 
         switch (value & 0xE0) {
@@ -50,15 +43,8 @@ class PwBuffer extends ExtendedBuffer
         return value;
     }
 
-    /**
-     * @param {PwBuffer} buffer
-     * @param {number} value
-     * @param {boolean} noAssert
-     * @returns {PwBuffer}
-     * @private
-     */
-    _writeCUIntToBuffer(buffer, value, noAssert) {
-        let tmp;
+    public _writeCUIntToBuffer(buffer: this, value: number, noAssert: boolean = false): this {
+        let tmp: number;
 
         if (value < 0x80) {
             buffer.writeUIntBE(value, 1, false, noAssert);
@@ -81,15 +67,10 @@ class PwBuffer extends ExtendedBuffer
         return this;
     }
 
-    /**
-     * @param {number} value
-     * @param {boolean} unshift
-     * @param {boolean} noAssert
-     * @returns {PwBuffer}
-     */
-    writeCUInt(value, unshift, noAssert) {
+    public writeCUInt(value: number, unshift: boolean = false, noAssert: boolean = false): this {
         if (unshift) {
-            let buffer = new this.constructor({
+            const ThisClass = <new(options?: PwBufferOptions) => this>this.constructor;
+            let buffer = new ThisClass({
                 maxBufferLength: 5
             });
 
@@ -99,21 +80,11 @@ class PwBuffer extends ExtendedBuffer
         return this._writeCUIntToBuffer(this, value, noAssert);
     }
 
-    /**
-     * @param {boolean} noAssert
-     * @returns {string}
-     */
-    readPwString(noAssert) {
+    public readPwString(noAssert: boolean = false): string {
         return this.readString(this.readCUInt(noAssert), 'utf16le');
     }
 
-    /**
-     * @param {string} string
-     * @param {boolean} unshift
-     * @param {boolean} noAssert
-     * @returns {PwBuffer}
-     */
-    writePwString(string, unshift, noAssert) {
+    public writePwString(string: string, unshift: boolean = false, noAssert: boolean = false): this {
         if (unshift) {
             return this.writeString(string, 'utf16le', true).writeCUInt(Buffer.byteLength(string, 'utf16le'), true, noAssert);
         }
@@ -121,24 +92,15 @@ class PwBuffer extends ExtendedBuffer
         return this.writeCUInt(Buffer.byteLength(string, 'utf16le'), false, noAssert).writeString(string, 'utf16le', false);
     }
 
-    /**
-     * @param {boolean} noAssert
-     * @returns {PwBuffer}
-     */
-    readPwOctets(noAssert) {
+    public readPwOctets(noAssert: boolean = false): this {
         let byteLength = this.readCUInt(noAssert);
-        return this.readBuffer(byteLength, false, {
+
+        return <this>this.readBuffer(byteLength, false, {
             maxBufferLength: byteLength
         });
     }
 
-    /**
-     * @param {PwBuffer|ExtendedBuffer|Buffer} octets
-     * @param {boolean} unshift
-     * @param {boolean} noAssert
-     * @returns {PwBuffer}
-     */
-    writePwOctets(octets, unshift, noAssert) {
+    public writePwOctets(octets: this | Buffer, unshift: boolean = false, noAssert: boolean = false): this {
         if (unshift) {
             return this.writeBuffer(octets, true).writeCUInt(octets.length, true, noAssert);
         }
@@ -146,5 +108,3 @@ class PwBuffer extends ExtendedBuffer
         return this.writeCUInt(octets.length, false, noAssert).writeBuffer(octets, false);
     }
 }
-
-module.exports = PwBuffer;

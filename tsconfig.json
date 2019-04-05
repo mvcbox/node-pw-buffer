@@ -1,0 +1,18 @@
+{
+  "compilerOptions": {
+    "target": "es5",
+    "lib": ["es5"],
+    "rootDir": "./src",
+    "outDir": "./dist",
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "strict": true,
+    "removeComments": true,
+    "declaration": true,
+    "sourceMap": false,
+    "inlineSources": false,
+    "allowJs": false,
+    "experimentalDecorators": true,
+    "typeRoots": ["./node_modules/@types"]
+  }
+}

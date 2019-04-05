@@ -1,10 +1,12 @@
 {
   "name": "pw-buffer",
-  "version": "1.0.5",
+  "version": "2.0.0",
   "description": "PW Buffer, Perfect World",
-  "main": "index.js",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "node ./node_modules/.bin/tsc"
   },
   "repository": {
     "type": "git",
@@ -17,6 +19,10 @@
   },
   "homepage": "https://github.com/mvcbox/node-pw-buffer#readme",
   "dependencies": {
-    "extended-buffer": "^5.0.3"
+    "extended-buffer": "^6.0.1"
+  },
+  "devDependencies": {
+    "@types/node": "^4.9.3",
+    "typescript": "^3.4.2"
   }
 }
