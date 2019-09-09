@@ -1,9 +1,9 @@
 {
   "compilerOptions": {
-    "target": "es5",
-    "lib": ["es5"],
-    "rootDir": "./src",
-    "outDir": "./dist",
+    "target": "es6",
+    "lib": ["es5", "es6"],
+    "rootDir": "src",
+    "outDir": "dist",
     "module": "commonjs",
     "moduleResolution": "node",
     "strict": true,
@@ -13,6 +13,6 @@
     "inlineSources": false,
     "allowJs": false,
     "experimentalDecorators": true,
-    "typeRoots": ["./node_modules/@types"]
+    "typeRoots": ["node_modules/@types"]
   }
 }

@@ -25,7 +25,7 @@ export class PwBuffer extends ExtendedBuffer {
         return true;
     }
 
-    public readCUInt(noAssert: boolean = false): number {
+    public readCUInt(noAssert?: boolean): number {
         let value = this.readUIntBE(1, noAssert);
 
         switch (value & 0xE0) {
@@ -43,7 +43,7 @@ export class PwBuffer extends ExtendedBuffer {
         return value;
     }
 
-    public _writeCUIntToBuffer(buffer: this, value: number, noAssert: boolean = false): this {
+    public _writeCUIntToBuffer(buffer: ExtendedBuffer, value: number, noAssert?: boolean): this {
         let tmp: number;
 
         if (value < 0x80) {
@@ -67,12 +67,13 @@ export class PwBuffer extends ExtendedBuffer {
         return this;
     }
 
-    public writeCUInt(value: number, unshift: boolean = false, noAssert: boolean = false): this {
+    public writeCUInt(value: number, unshift?: boolean, noAssert?: boolean): this {
         if (unshift) {
             const ThisClass = <new(options?: PwBufferOptions) => this>this.constructor;
             let buffer = new ThisClass({
                 maxBufferLength: 5
             });
+            buffer.allocEnd(buffer.getFreeSpace());
 
             return this._writeCUIntToBuffer(buffer, value, noAssert)._writeNativeBuffer(buffer.buffer, true);
         }
@@ -80,11 +81,11 @@ export class PwBuffer extends ExtendedBuffer {
         return this._writeCUIntToBuffer(this, value, noAssert);
     }
 
-    public readPwString(noAssert: boolean = false): string {
+    public readPwString(noAssert?: boolean): string {
         return this.readString(this.readCUInt(noAssert), 'utf16le');
     }
 
-    public writePwString(string: string, unshift: boolean = false, noAssert: boolean = false): this {
+    public writePwString(string: string, unshift?: boolean, noAssert?: boolean): this {
         if (unshift) {
             return this.writeString(string, 'utf16le', true).writeCUInt(Buffer.byteLength(string, 'utf16le'), true, noAssert);
         }
@@ -92,15 +93,15 @@ export class PwBuffer extends ExtendedBuffer {
         return this.writeCUInt(Buffer.byteLength(string, 'utf16le'), false, noAssert).writeString(string, 'utf16le', false);
     }
 
-    public readPwOctets(noAssert: boolean = false): this {
+    public readPwOctets(noAssert?: boolean): this {
         let byteLength = this.readCUInt(noAssert);
 
-        return <this>this.readBuffer(byteLength, false, {
+        return this.readBuffer(byteLength, false, {
             maxBufferLength: byteLength
         });
     }
 
-    public writePwOctets(octets: this | Buffer, unshift: boolean = false, noAssert: boolean = false): this {
+    public writePwOctets(octets: ExtendedBuffer | Buffer, unshift?: boolean, noAssert?: boolean): this {
         if (unshift) {
             return this.writeBuffer(octets, true).writeCUInt(octets.length, true, noAssert);
         }
