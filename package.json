@@ -1,6 +1,6 @@
 {
   "name": "pw-buffer",
-  "version": "3.0.0",
+  "version": "3.0.1",
   "description": "PW Buffer, Perfect World, Beijing Perfect World",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
