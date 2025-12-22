@@ -25,7 +25,6 @@ b.writePwString('Hello');
 b.writePwOctets(Buffer.from([1, 2, 3]));
 
 // Read back
-b.setPointer(0);
 console.log(b.readCUInt());      // 123
 console.log(b.readPwString());   // "Hello"
 console.log(b.readPwOctets().nativeBufferView); // <Buffer 01 02 03>
