@@ -145,7 +145,6 @@ Reads a PW string:
 2. Reads `N` bytes and decodes them as `utf16le`
 
 ```ts
-b.setPointer(0);
 const s = b.readPwString();
 ```
 
