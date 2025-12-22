@@ -1,3 +1,5 @@
+[![npm version](https://badge.fury.io/js/pw-buffer.svg)](https://badge.fury.io/js/pw-buffer)
+
 # Perfect World binary utils
 
 A small TypeScript/Node.js library built on top of [extended-buffer](https://github.com/mvcbox/node-extended-buffer) that adds helpers commonly found in some Perfect World / PW-style binary protocols:
