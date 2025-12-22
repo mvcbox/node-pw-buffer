@@ -78,7 +78,7 @@ export class PwBuffer extends ExtendedBuffer {
     let byteLength = this.readCUInt();
 
     return this.readBuffer(byteLength, false, {
-      capacity: 0,
+      capacity: byteLength,
       capacityStep: 0
     });
   }
