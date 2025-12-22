@@ -1,7 +1,7 @@
 {
   "compilerOptions": {
-    "target": "ES2020",
-    "lib": ["es5", "es6", "ES2020"],
+    "target": "es6",
+    "lib": ["es5", "es6"],
     "rootDir": "src",
     "outDir": "dist",
     "module": "commonjs",
