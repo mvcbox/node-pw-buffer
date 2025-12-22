@@ -1,12 +1,35 @@
 {
   "name": "pw-buffer",
-  "version": "2.1.0",
-  "description": "PW Buffer, Perfect World",
-  "main": "dist/index.js",
-  "types": "dist/index.d.ts",
+  "version": "3.0.0",
+  "description": "PW Buffer, Perfect World, Beijing Perfect World",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "require": "./dist/index.js",
+      "default": "./dist/index.js"
+    }
+  },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "node ./node_modules/.bin/tsc"
+    "build": "npm run clean && node ./node_modules/.bin/tsc",
+    "clean": "node -e \"['./dist'].forEach(item => require('fs').rmSync(item, {recursive:true,force:true}));\"",
+    "prepack": "npm run build"
+  },
+  "engines": {
+    "node": ">=6.0.0"
+  },
+  "devEngines": {
+    "runtime": {
+      "name": "node",
+      "version": ">=18.0.0",
+      "onFail": "error"
+    },
+    "packageManager": {
+      "name": "npm",
+      "version": ">=8.6.0",
+      "onFail": "error"
+    }
   },
   "repository": {
     "type": "git",
@@ -18,11 +41,16 @@
     "url": "https://github.com/mvcbox/node-pw-buffer/issues"
   },
   "homepage": "https://github.com/mvcbox/node-pw-buffer#readme",
+  "files": [
+    "dist",
+    "LICENSE",
+    "README.md"
+  ],
   "dependencies": {
-    "extended-buffer": "^6.0.4"
+    "extended-buffer": "^7.0.1"
   },
   "devDependencies": {
-    "@types/node": "^4.9.3",
-    "typescript": "^3.6.2"
+    "@types/node": "^6.14.13",
+    "typescript": "^4.7.2"
   }
 }

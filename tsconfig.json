@@ -12,7 +12,7 @@
     "sourceMap": false,
     "inlineSources": false,
     "allowJs": false,
-    "experimentalDecorators": true,
+    "strictPropertyInitialization": true,
     "typeRoots": ["node_modules/@types"]
   }
 }
