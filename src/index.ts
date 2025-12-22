@@ -1,4 +1,5 @@
 export * from './utils';
+export * from './errors';
 export { PwBuffer } from './PwBuffer';
 export type { PwBufferOptions } from './PwBufferOptions';
 export { MppcCompressor, MppcDecompressor } from './mppc';
