@@ -2,6 +2,7 @@
   "name": "pw-buffer",
   "version": "3.0.2",
   "description": "PW Buffer, Perfect World, Beijing Perfect World",
+  "type": "commonjs",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "exports": {
