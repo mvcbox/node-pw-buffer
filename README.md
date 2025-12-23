@@ -1,4 +1,4 @@
-[![npm version](https://badge.fury.io/js/pw-buffer.svg)](https://badge.fury.io/js/pw-buffer)
+[![npm version](https://badge.fury.io/js/pw-buffer.svg?flush_cache=v3_0_2)](https://badge.fury.io/js/pw-buffer)
 
 # Perfect World binary utils
 

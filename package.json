@@ -1,6 +1,6 @@
 {
   "name": "pw-buffer",
-  "version": "3.0.1",
+  "version": "3.0.2",
   "description": "PW Buffer, Perfect World, Beijing Perfect World",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
@@ -47,7 +47,7 @@
     "README.md"
   ],
   "dependencies": {
-    "extended-buffer": "^7.0.1"
+    "extended-buffer": "^7.0.2"
   },
   "devDependencies": {
     "@types/node": "^6.14.13",
