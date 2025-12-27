@@ -9,6 +9,7 @@
     ".": {
       "types": "./dist/index.d.ts",
       "require": "./dist/index.js",
+      "import": "./dist/index.js",
       "default": "./dist/index.js"
     }
   },
@@ -48,7 +49,7 @@
     "README.md"
   ],
   "dependencies": {
-    "extended-buffer": "^7.0.2"
+    "extended-buffer": "^7.1.0"
   },
   "devDependencies": {
     "@types/node": "^6.14.13",
