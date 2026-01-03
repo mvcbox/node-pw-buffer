@@ -13,10 +13,14 @@ export class MppcDecompressorTransform extends Transform  {
     this._mppcDecompressor = new MppcDecompressor();
   }
 
-  public _transform(chunk: Buffer, encoding: string, callback: Function): void {
+  public _transform(chunk: Buffer | string, encoding: string, callback: Function): void {
     try {
       if (chunk instanceof Buffer) {
-        callback(null, this._mppcDecompressor.update(chunk));
+        this.push(this._mppcDecompressor.update(chunk));
+        callback();
+      } else if (typeof chunk === 'string') {
+        this.push(this._mppcDecompressor.update(Buffer.from(chunk, encoding)));
+        callback();
       } else {
         callback(new PwBufferTypeError('INVALID_CHUNK_TYPE'));
       }

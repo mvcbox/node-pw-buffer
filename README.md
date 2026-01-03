@@ -81,6 +81,8 @@ export { MppcDecompressorTransform } from './MppcDecompressorTransform';
 
 - `capacity?: number` – initial capacity (bytes)
 - `capacityStep?: number` – resize step (bytes)
+- `nativeAllocSlow?: boolean` – using Buffer.allocUnsafeSlow() when initializing
+- `nativeReallocSlow?: boolean` – using Buffer.allocUnsafeSlow() for further reallocations
 
 Example:
 

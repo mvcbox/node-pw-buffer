@@ -74,7 +74,7 @@ class BitWriter {
 }
 
 export class MppcDecompressor {
-  private history = new Uint8Array(MPPC_HIST_LEN);
+  private history = Buffer.alloc(MPPC_HIST_LEN);
   private histPtr = 0;
   private bitOffset = 0; // 0..7
   private legacy = Buffer.alloc(0); // pending compressed bytes
@@ -162,7 +162,7 @@ export class MppcDecompressor {
           }
 
           if (this.histPtr > histHead) {
-            outParts.push(Buffer.from(this.history.subarray(histHead, this.histPtr)));
+            outParts.push(Buffer.from(nativeBufferSubarray(this.history, histHead, this.histPtr)));
           }
 
           if (this.histPtr === MPPC_HIST_LEN) {
@@ -285,7 +285,7 @@ export class MppcDecompressor {
     }
 
     if (this.histPtr > histHead) {
-      outParts.push(Buffer.from(this.history.subarray(histHead, this.histPtr)));
+      outParts.push(Buffer.from(nativeBufferSubarray(this.history, histHead, this.histPtr)));
     }
 
     this.legacy = nativeBufferSubarray(this.legacy, rptr);
@@ -295,7 +295,7 @@ export class MppcDecompressor {
 }
 
 export class MppcCompressor {
-  private history = new Uint8Array(MPPC_HIST_LEN);
+  private history = Buffer.alloc(MPPC_HIST_LEN);
   private histPtr = 0;
   private readonly bw = new BitWriter();
   private readonly dict = new Map<number, number[]>();

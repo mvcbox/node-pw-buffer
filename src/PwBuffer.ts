@@ -1,14 +1,9 @@
 import { Buffer } from 'buffer';
 import * as utils from './utils';
-import { ExtendedBuffer } from 'extended-buffer';
 import type { PwBufferOptions } from './PwBufferOptions';
+import { ExtendedBuffer, ExtendedBufferOptions } from 'extended-buffer';
 
-export class PwBuffer extends ExtendedBuffer {
-  protected createInstance(options?: PwBufferOptions): this {
-    const ThisClass = this.constructor as unknown as new (opts?: PwBufferOptions) => this;
-    return new ThisClass(options);
-  }
-
+export class PwBuffer<PBO extends PwBufferOptions = PwBufferOptions> extends ExtendedBuffer<PBO> {
   public isReadableCUInt(): boolean {
     if (!this.isReadable(1)) {
       return false;
@@ -31,63 +26,81 @@ export class PwBuffer extends ExtendedBuffer {
   }
 
   public readCUInt(): number {
-    let value = this.readUIntBE(1);
+    const savedPointer = this.getPointer();
 
-    switch (value & 0xE0) {
-      case 0xE0: {
-        try {
+    try {
+      const value = this.readUIntBE(1);
+
+      switch (value & 0xE0) {
+        case 0xE0: {
           return this.readUIntBE(4);
-        } catch (e) {
+        }
+        case 0xC0: {
           this._pointer--;
+          return this.readUIntBE(4) & 0x1FFFFFFF;
+        }
+        case 0x80:
+        case 0xA0: {
+          this._pointer--;
+          return this.readUIntBE(2) & 0x3FFF;
         }
       }
-      case 0xC0: {
-        this._pointer--;
-        return this.readUIntBE(4) & 0x1FFFFFFF;
-      }
-      case 0x80:
-      case 0xA0: {
-        this._pointer--;
-        return this.readUIntBE(2) & 0x3FFF;
-      }
-    }
 
-    return value;
+      return value;
+    } catch (e) {
+      this.setPointer(savedPointer);
+      throw e;
+    }
   }
 
   public writeCUInt(value: number, unshift?: boolean): this {
-    utils.writeCUIntToPwBuffer(this, value, unshift);
-    return this;
+    const data = new PwBuffer({
+      capacity: 5,
+      capacityStep: 0
+    });
+
+    utils.writeCUIntToPwBuffer(data, value);
+    return this.writeNativeBuffer(data.nativeBufferView, unshift);
   }
 
   public readPwString(): string {
-    return this.readString(this.readCUInt(), 'utf16le');
+    const savedPointer = this.getPointer();
+
+    try {
+      return this.readString(this.readCUInt(), 'utf16le');
+    } catch (e) {
+      this.setPointer(savedPointer);
+      throw e;
+    }
   }
 
   public writePwString(string: string, unshift?: boolean): this {
-    const bytes = Buffer.from(string, 'utf16le');
-
-    if (unshift) {
-      return this.writeNativeBuffer(bytes, true).writeCUInt(bytes.length, true);
-    }
-
-    return this.writeCUInt(bytes.length).writeNativeBuffer(bytes);
+    const octets = Buffer.from(string, 'utf16le');
+    return this.writePwOctets(octets, unshift);
   }
 
   public readPwOctets(): this {
-    let byteLength = this.readCUInt();
+    const savedPointer = this.getPointer();
 
-    return this.readBuffer(byteLength, false, {
-      capacity: byteLength,
-      capacityStep: 0
-    });
+    try {
+      const byteLength = this.readCUInt();
+
+      return this.readBuffer(byteLength, false, {
+        capacity: byteLength,
+        capacityStep: 0
+      } as PBO);
+    } catch (e) {
+      this.setPointer(savedPointer);
+      throw e;
+    }
   }
 
-  public writePwOctets(octets: ExtendedBuffer | Buffer, unshift?: boolean): this {
-    if (unshift) {
-      return this.writeBuffer(octets, true).writeCUInt(octets.length, true);
-    }
+  public writePwOctets(octets: ExtendedBuffer<ExtendedBufferOptions> | Buffer, unshift?: boolean): this {
+    const data = (new PwBuffer({
+      capacity: octets.length + 5,
+      capacityStep: 0
+    })).writeCUInt(octets.length).writeBuffer(octets);
 
-    return this.writeCUInt(octets.length).writeBuffer(octets);
+    return this.writeNativeBuffer(data.nativeBufferView, unshift);
   }
 }

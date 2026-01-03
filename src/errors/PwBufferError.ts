@@ -1,4 +1,6 @@
-export class PwBufferError extends Error {
+import { ExtendedBufferError } from 'extended-buffer';
+
+export class PwBufferError extends ExtendedBufferError {
   public constructor(message?: string) {
     super(message);
     this.name = new.target.name;
