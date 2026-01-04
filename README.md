@@ -12,7 +12,7 @@ A small TypeScript/Node.js library built on top of [extended-buffer](https://git
 ## Install
 
 ```bash
-npm i pw-buffer
+npm install pw-buffer
 ```
 
 ## Quick start
@@ -264,4 +264,4 @@ fs.createReadStream('input.bin.mppc')
 
 ## License
 
-MIT (see the package metadata).
+MIT
