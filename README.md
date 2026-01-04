@@ -264,4 +264,4 @@ fs.createReadStream('input.bin.mppc')
 
 ## License
 
-MIT (see the package metadata).
+MIT
