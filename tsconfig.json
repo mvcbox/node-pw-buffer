@@ -13,7 +13,6 @@
     "sourceMap": false,
     "inlineSources": false,
     "allowJs": false,
-    "useDefineForClassFields": false,
     "strictPropertyInitialization": true,
     "typeRoots": ["node_modules/@types"]
   }
