@@ -13,6 +13,7 @@
     "sourceMap": false,
     "inlineSources": false,
     "allowJs": false,
+    "preserveConstEnums": true,
     "strictPropertyInitialization": true,
     "typeRoots": ["node_modules/@types"]
   }
