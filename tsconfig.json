@@ -15,6 +15,9 @@
     "allowJs": false,
     "strictNullChecks": true,
     "preserveConstEnums": true,
+    "strictFunctionTypes": true,
+    "strictBindCallApply": true,
+    "strictBuiltinIteratorReturn": true,
     "strictPropertyInitialization": true,
     "typeRoots": ["node_modules/@types"]
   }
