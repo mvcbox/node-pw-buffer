@@ -6,19 +6,13 @@
     "outDir": "dist",
     "module": "CommonJS",
     "moduleResolution": "node",
-    "esModuleInterop": true,
     "strict": true,
+    "esModuleInterop": true,
     "removeComments": true,
     "declaration": true,
-    "sourceMap": false,
-    "inlineSources": false,
-    "allowJs": false,
-    "strictNullChecks": true,
     "preserveConstEnums": true,
-    "strictFunctionTypes": true,
-    "strictBindCallApply": true,
-    "strictBuiltinIteratorReturn": true,
-    "strictPropertyInitialization": true,
+    "noEmitOnError": true,
     "typeRoots": ["node_modules/@types"]
-  }
+  },
+  "include": ["src/**/*.ts"]
 }
